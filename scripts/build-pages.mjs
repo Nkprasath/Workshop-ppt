@@ -99,9 +99,16 @@ async function main() {
   // costs nothing and removes a class of surprise.
   await writeFile(path.join(out, ".nojekyll"), "", "utf8");
 
-  const index = await readFile(path.join(root, "src", "standalone", "index.html"), "utf8");
-  await writeFile(path.join(out, "index.html"), index.replace("__CSS__", css), "utf8");
-  console.log(`  index.html     ${(index.length / 1024).toFixed(0)} KB shell`);
+  // Plain HTML pages: the landing page, and the review page written for Olivia. Both take
+  // the same compiled CSS so the whole site is one visual system.
+  for (const name of ["index.html", "review.html"]) {
+    const shell = await readFile(path.join(root, "src", "standalone", name), "utf8");
+    const html = shell.replace("__CSS__", css);
+    await writeFile(path.join(out, name), html, "utf8");
+    console.log(
+      `  ${name.padEnd(14)} ${(Buffer.byteLength(html, "utf8") / 1024).toFixed(0)} KB`
+    );
+  }
   console.log(`\nwrote ${path.relative(root, out)}`);
 }
 
