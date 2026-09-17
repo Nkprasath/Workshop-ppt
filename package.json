@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Slide deck for the DPDP Implementation Workshop. Builds to one self-contained HTML file.",
   "scripts": {
-    "build": "node scripts/build-standalone.mjs"
+    "build": "node scripts/build-pages.mjs"
   },
   "dependencies": {
     "animejs": "^4.5.0",
