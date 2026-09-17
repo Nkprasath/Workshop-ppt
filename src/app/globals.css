@@ -1,0 +1,99 @@
+/* Lato is served from this origin, not from fonts.googleapis.com. The notice claims
+   there is no third party request on this page and Block 4 demonstrates that in a network
+   tab, so a webfont CDN would both break the CSP and make the notice untrue. */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/lato-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/lato-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('/fonts/lato-900.woff2') format('woff2');
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Lato', system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+  /* Inputs are the whole product here, so they get one definition rather than a class
+     repeated on two hundred elements. */
+  input[type='text'],
+  input[type='email'],
+  textarea,
+  select {
+    @apply w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900
+           placeholder:text-gray-400 focus:border-blue-500 focus:outline-none
+           focus:ring-2 focus:ring-blue-500/20 transition-colors;
+  }
+  textarea {
+    @apply min-h-[38px] resize-y leading-snug;
+  }
+  input[type='checkbox'] {
+    @apply h-4 w-4 shrink-0 rounded border-gray-300 text-blue-600
+           focus:ring-2 focus:ring-blue-500/30 cursor-pointer;
+  }
+  table {
+    @apply border-collapse;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm
+           font-medium transition-all disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply bg-blue-600 text-white shadow-sm hover:bg-blue-700 hover:shadow-md;
+  }
+  .btn-outline {
+    @apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900;
+  }
+  .btn-ghost {
+    @apply text-gray-600 hover:bg-gray-100 hover:text-gray-900;
+  }
+  .btn-danger {
+    @apply border border-red-200 bg-white text-red-600 hover:bg-red-50;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .card {
+    @apply rounded-lg border border-gray-200 bg-white shadow-sm;
+  }
+  /* Statutory citations. Small, monospace, never shouting, but always visible, because
+     Block 4 involves pointing at them. */
+  .cite {
+    @apply font-mono text-[11px] uppercase tracking-wide text-gray-400;
+  }
+}
+
+/* Deck reveals. Elements opt in with data-frag and start hidden; anime.js in
+   src/app/deck/reveal.ts writes every visible state after that as an inline style. The
+   overview grid renders slides fully revealed, so it opts back out. */
+[data-frag] {
+  opacity: 0;
+}
+.deck-static [data-frag],
+.deck-static [data-anim="word"],
+.deck-static [data-anim="dot"] {
+  opacity: 1 !important;
+}
