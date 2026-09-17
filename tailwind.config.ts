@@ -4,7 +4,7 @@ import type { Config } from "tailwindcss";
 // than the shadcn token names in the main repo's components/ui, which are not wired into
 // its tailwind config and resolve to nothing.
 const config: Config = {
-  content: ["./src/**/*.{ts,tsx}"],
+  content: ["./src/**/*.{ts,tsx,html}"],
   theme: {
     extend: {
       fontFamily: {

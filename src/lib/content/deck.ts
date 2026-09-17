@@ -520,7 +520,7 @@ export const SLIDES: Slide[] = [
   {
     id: "legacy-position",
     kind: "chain",
-    block: "Block 5",
+    block: "Block 4",
     title: "Data you collected before any of this commenced",
     intro: "One dataset, three defensible positions. Pick one per dataset and write down why.",
     nodes: [
@@ -554,7 +554,7 @@ export const SLIDES: Slide[] = [
   {
     id: "rights-clocks",
     kind: "ledger",
-    block: "Block 6",
+    block: "Block 5",
     title: "Four requests, and what the clock actually says",
     headers: ["The request", "What it really is", "The deadline"],
     rows: [
@@ -579,7 +579,7 @@ export const SLIDES: Slide[] = [
   {
     id: "breach-two-laws",
     kind: "compare",
-    block: "Block 7",
+    block: "Block 6",
     title: "Two laws, one incident, and only one of them applies today",
     panels: [
       {
@@ -619,7 +619,7 @@ export const SLIDES: Slide[] = [
   {
     id: "four-clocks",
     kind: "dials",
-    block: "Block 7",
+    block: "Block 6",
     title: "Four clocks, one of them running",
     dials: [
       { time: "6h", who: "CERT-In", starts: "On noticing", running: true },
@@ -641,7 +641,7 @@ export const SLIDES: Slide[] = [
   {
     id: "vendor-clauses",
     kind: "ledger",
-    block: "Block 7",
+    block: "Block 6",
     title: "What has to be in the processor contract",
     headers: ["Clause", "Why it exists", "In your current template"],
     rows: [
