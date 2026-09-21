@@ -169,114 +169,39 @@ export interface LanesSlide extends Base {
 }
 
 export const SLIDES: Slide[] = [
-  {
-    id: "three-claims",
-    kind: "claims",
-    block: "Block 1",
-    title: "Three things published about this Act",
-    lead: "Quoted word for word. Each one assumes a provision is in force. Here is the board underneath them.",
-    claims: [
-      {
-        quote:
-          "Its chairperson and members were appointed on 6 June 2026, and its grievance portal is live.",
-        source: "blog.concur.live",
-        fact: "F103",
-        assumes: "s11-17",
-      },
-      {
-        quote: "India switched on its Data Protection Board.",
-        source: "mickai.co.uk",
-        fact: "F105",
-        assumes: "s7-10",
-      },
-      {
-        quote: "Penalties become live at the twelve month mark, in November 2026.",
-        source: "Repeated across vendor sites and law firm summaries",
-        fact: "F108",
-        assumes: "s28-34",
-      },
-    ],
-    verdict:
-      "Every provision these three claims depend on sits in the last column, and none of it is in force until 13 May 2027.",
-    steps: 5,
-    seconds: 240,
-    notes: [
-      "Read each claim out verbatim. Do not editorialise about the publisher beyond the URL on the slide.",
-      "Claim one is checkable live: type dpdpa-grievance.gov.in and let them watch it fail to resolve (F23).",
-      "Do not name-and-shame. Most of the room has repeated at least one of these. That is the point.",
-      "The Board does exist under ss.18 to 26, which is lit. What does not exist is an appointed Board and a route to it. Keep that distinction clean.",
-    ],
-  },
 
   {
     id: "board-at-rest",
     kind: "board",
     block: "Block 1",
-    title: "The Act, as it actually stands today",
+    title: "One Act, three start dates",
     caption:
-      "One Act, three commencement dates. Almost every piece of bad advice comes from collapsing them into one.",
+      "The government switched this on in three stages. Here is the whole schedule, and where we are in it today.",
     steps: 4,
     focusByStep: [undefined, ["s1", "s2", "s18-26", "s35-44"], ["s6-9", "s27-1-d"], undefined],
     readout: [
-      { at: 2, text: "In force since 13 November 2025: the definitions, and the Board existing on paper." },
-      { at: 3, text: "Seven weeks away: Consent Manager registration. Two provisions. That is the whole of it." },
-      { at: 4, text: "Everything you would recognise as compliance is in the last column, and none of it is in force." },
+      { at: 2, text: "In force since 13 November 2025: the definitions, and the Board existing on paper. Four provisions." },
+      { at: 3, text: "Next: 13 November 2026. Two provisions, both about Consent Managers." },
+      { at: 4, text: "Then 13 May 2027, when everything you would recognise as compliance arrives at once. That is the date to plan against." },
     ],
     fact: "F1, F3, F4",
     seconds: 210,
     notes: [
-      "Let them read the board before you say anything. The picture does the work.",
+      "Let them read the board before you say anything. Left to right is the whole story.",
       "The Act commenced by G.S.R. 843(E). The Rules are a separate instrument, G.S.R. 846(E), same date. Conflating them is the most common error in circulating summaries (F4).",
       "Some sources say 14 November 2025, which is when the Gazette copy became available. Say 13 November, note the discrepancy exists, move on (F5).",
-      "Do not editorialise on the last column yet. Block 2 earns it.",
+      "Do not rush this. If they leave with only one picture from the day, it should be this one.",
     ],
   },
 
-  {
-    id: "dns-check",
-    kind: "browser",
-    block: "Block 1",
-    title: "The grievance portal that was reported as live",
-    url: "dpdpa-grievance.gov.in",
-    outcome: { headline: "This site can\u2019t be reached", detail: "DNS_PROBE_FINISHED_NXDOMAIN" },
-    verdict: "The domain does not resolve. It never has.",
-    fact: "F23",
-    steps: 3,
-    seconds: 120,
-    notes: [
-      "Do this live if you can. The slide is the backup, not the plan.",
-      "Type it slowly enough that people read the URL before it fails.",
-      "Ten seconds, one claim falsified in front of them. Cheapest credibility of the day.",
-      "Do not gloat. Move straight on to why the claim was plausible.",
-    ],
-  },
 
-  {
-    id: "sdf-register",
-    kind: "ledger",
-    block: "Block 1",
-    title: "The register of Significant Data Fiduciaries",
-    headers: ["Notified SDF", "Date notified", "Category of data specified", "Localisation applies"],
-    rows: [],
-    emptyNote:
-      "No entries. No Data Fiduciary has been notified as significant, and no category of data has been specified under Rule 13(4).",
-    verdict:
-      "The localisation clock cannot be ticking, because the thing it would tick for does not exist yet.",
-    fact: "F87, F105",
-    steps: 3,
-    seconds: 150,
-    notes: [
-      "An empty register is a stronger image than a paragraph saying the register is empty.",
-      "Rule 13(4) is the only localisation provision in the whole instrument, and it applies to notified SDFs only.",
-      "If asked about sectoral rules: RBI and IRDAI localisation is separate law and unaffected by any of this.",
-    ],
-  },
+
 
   {
     id: "gazette-wiring",
     kind: "wiring",
-    block: "Block 2",
-    title: "The notification is the wiring diagram",
+    block: "Block 1",
+    title: "Where those three dates come from",
     masthead: [
       "MINISTRY OF ELECTRONICS AND INFORMATION TECHNOLOGY",
       "NOTIFICATION",
@@ -307,26 +232,25 @@ export const SLIDES: Slide[] = [
       },
     ],
     verdict:
-      "The same instrument that switches on 27(1)(d) next November holds sections 28 to 34 back to May 2027. Section 33 is the penalty. Section 28 is the inquiry.",
+      "One page, three clauses, three dates. Everything in this deck about timing comes from here and can be checked against it.",
     fact: "F123, F124, F128, F129",
     steps: 5,
     seconds: 300,
     notes: [
-      "This is the slide the block exists for. Do not rush it.",
+      "Show them it is one page. The whole schedule is three clauses long.",
       "Walk the wires one at a time. Clause (a), then (b), then (c). Let each one land before the next.",
-      "When the ring closes on sections 28 to 34, stop talking for a beat.",
+      "The ring on investigations and fines is the setup for the next block. Do not explain it yet.",
       "Anyone can check this: F. No. AA-11038/1/2025-CL&ES, signed Ajit Kumar, Jt. Secy.",
       "If challenged: the words 'impose penalty' do appear inside 27(1)(d). That is the trap. Clause (c) of this same notification is the answer.",
     ],
   },
-
   {
     id: "november-fires",
     kind: "board",
     block: "Block 2",
-    title: "13 November 2026, in full",
+    title: "What changes on 13 November 2026",
     caption:
-      "This is the whole of what changes on the date everyone is talking about.",
+      "The next date on the schedule. This is the complete list of what switches on.",
     steps: 3,
     focusByStep: [undefined, ["s6-9", "s27-1-d"], ["s28-34"]],
     litByStep: [undefined, ["s6-9", "s27-1-d"], ["s6-9", "s27-1-d"]],
@@ -343,47 +267,13 @@ export const SLIDES: Slide[] = [
     ],
   },
 
-  {
-    id: "enforcement-chain",
-    kind: "chain",
-    block: "Block 2",
-    title: "What would have to exist for a penalty to be imposed",
-    intro: "Three things, in order. Follow the chain and see where it stops.",
-    nodes: [
-      {
-        label: "An appointed Board",
-        sub: "ss.18-26 are in force, but there is no Chairperson and no Members as of 1 August 2026",
-        state: "absent",
-      },
-      {
-        label: "A power to inquire",
-        sub: "s.28, commences 13 May 2027",
-        state: "absent",
-      },
-      {
-        label: "A power to penalise",
-        sub: "s.33 and the Schedule, commence 13 May 2027",
-        state: "absent",
-      },
-    ],
-    verdict:
-      "Not one of the three exists on 13 November 2026. The chain does not break at the end, it never starts.",
-    fact: "F18, F128, F129, F130",
-    steps: 5,
-    seconds: 240,
-    notes: [
-      "Walk it left to right. Let each box fail before moving on.",
-      "If challenged, the contrary argument is that 27(1)(d) is self-executing without section 28. Even then no money moves, because the amount lives only in section 33 and the Schedule and neither is in force.",
-      "Be fair: treating 13 November 2026 as a planning checkpoint is reasonable. Treating it as the date penalties begin is not (F145).",
-    ],
-  },
 
   {
     id: "cm-registration",
     kind: "chain",
     block: "Block 2",
-    title: "So what is 13 November 2026 actually for",
-    intro: "Consent Manager registration. Here is what registering would take.",
+    title: "Who that date is for",
+    intro: "Consent Managers, and almost nobody else. Here is what becoming one takes.",
     nodes: [
       {
         label: "A registrar",
@@ -410,6 +300,40 @@ export const SLIDES: Slide[] = [
       "Lead with the registrar. It is the simple version and it lands without the certification chain.",
       "Hold the First Schedule detail in reserve for pushback.",
       "Do not predict when appointments will happen. Guessing is the error we are correcting.",
+    ],
+  },
+  {
+    id: "enforcement-chain",
+    kind: "chain",
+    block: "Block 2",
+    title: "Does anything get enforced on that date?",
+    intro: "The question everybody asks about November. Enforcement needs three things, and the schedule tells you when each arrives.",
+    nodes: [
+      {
+        label: "An appointed Board",
+        sub: "In force since 2025, but no Chairperson or Members have been appointed yet",
+        state: "absent",
+      },
+      {
+        label: "A power to inquire",
+        sub: "s.28, commences 13 May 2027",
+        state: "absent",
+      },
+      {
+        label: "A power to penalise",
+        sub: "s.33 and the Schedule, commence 13 May 2027",
+        state: "absent",
+      },
+    ],
+    verdict:
+      "All three arrive on 13 May 2027. So the honest answer for November is no, and the date to prepare for is May.",
+    fact: "F18, F128, F129, F130",
+    steps: 5,
+    seconds: 240,
+    notes: [
+      "Walk it left to right. This answers the question rather than arguing with anyone.",
+      "If challenged, the contrary argument is that 27(1)(d) is self-executing without section 28. Even then no money moves, because the amount lives only in section 33 and the Schedule and neither is in force.",
+      "Be fair: treating 13 November 2026 as a planning checkpoint is reasonable. Treating it as the date penalties begin is not (F145).",
     ],
   },
 

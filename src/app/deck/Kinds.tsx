@@ -185,14 +185,18 @@ export function LedgerView({ slide, step }: { slide: LedgerSlide; step: number }
     <div className={SHELL}>
       <Head block={slide.block} title={slide.title} />
 
-      <div className="mt-2 overflow-hidden rounded-[3px] border-2 border-[#c5c0b5]">
+      <div className="flex h-[440px] flex-col justify-center">
         <table className="w-full">
           <thead>
-            <tr className="bg-[#ece8e1]">
-              {slide.headers.map((h) => (
+            <tr>
+              {slide.headers.map((h, i) => (
                 <th
                   key={h}
-                  className="border-b-2 border-[#c5c0b5] px-4 py-2.5 text-left font-mono text-[11px] font-bold uppercase tracking-wider text-[#4a463e]"
+                  className={`border-b-2 border-[#141412] px-5 pb-2.5 text-left font-mono text-[12px] font-bold uppercase tracking-wider ${
+                    i === slide.headers.length - 1
+                      ? "text-[#141412]"
+                      : "text-[#8a857a]"
+                  }`}
                 >
                   {h}
                 </th>
@@ -202,9 +206,9 @@ export function LedgerView({ slide, step }: { slide: LedgerSlide; step: number }
           <tbody>
             {empty
               ? Array.from({ length: 5 }, (_, r) => (
-                  <tr key={r} className="h-[46px]">
+                  <tr key={r} className="h-[58px]">
                     {slide.headers.map((h) => (
-                      <td key={h} className="border-b border-[#ddd8ce] px-4" />
+                      <td key={h} className="border-b border-[#ddd8ce] px-5" />
                     ))}
                   </tr>
                 ))
@@ -219,12 +223,14 @@ export function LedgerView({ slide, step }: { slide: LedgerSlide; step: number }
                       <td
                         key={c}
                         data-cell={`${r},${c}`}
-                        className={`border-b border-[#ddd8ce] px-4 py-3 text-[14px] leading-snug ${
+                        className={`border-b border-[#ddd8ce] px-5 py-5 leading-snug ${
                           c === 0
-                            ? "font-semibold text-[#141412]"
+                            ? "text-[17px] font-bold text-[#141412]"
                             : scored.has(`${r},${c}`) && r < shownRows
-                              ? "font-semibold text-[#c0392b]"
-                              : "text-[#4a463e]"
+                              ? "text-[16px] font-bold text-[#c0392b]"
+                              : c === row.length - 1
+                                ? "text-[16px] font-semibold text-[#141412]"
+                                : "text-[15px] text-[#57534a]"
                         }`}
                       >
                         {cell}
