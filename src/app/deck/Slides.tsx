@@ -2,6 +2,8 @@
 
 import type { Slide, BoardSlide, WiringSlide, ClaimsSlide } from "@/lib/content/deck";
 import {
+  TitleView,
+  CompanyView,
   BrowserView,
   ChainView,
   LedgerView,
@@ -331,6 +333,10 @@ function ClaimsSlideView({ slide, step }: { slide: ClaimsSlide; step: number }) 
 
 export function SlideView({ slide, step }: { slide: Slide; step: number }) {
   switch (slide.kind) {
+    case "title":
+      return <TitleView slide={slide} step={step} />;
+    case "company":
+      return <CompanyView slide={slide} step={step} />;
     case "board":
       return <BoardSlideView slide={slide} step={step} />;
     case "claims":

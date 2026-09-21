@@ -1,6 +1,8 @@
 "use client";
 
 import type {
+  TitleSlide,
+  CompanySlide,
   BrowserSlide,
   ChainSlide,
   LedgerSlide,
@@ -608,6 +610,88 @@ export function LanesView({ slide, step }: { slide: LanesSlide; step: number }) 
       </div>
 
       {step >= 3 && <Verdict fact={slide.fact}>{slide.verdict}</Verdict>}
+    </div>
+  );
+}
+
+// --------------------------------------------------------------------- title
+
+// The opening and the close. Both answer one question, which is what the person watching
+// walks away holding. Deliberately sparse: a claim, then the four things they get.
+export function TitleView({ slide, step }: { slide: TitleSlide; step: number }) {
+  return (
+    <div className="relative flex h-full flex-col justify-center overflow-hidden bg-[#fbfaf7] px-20">
+      <div className="absolute left-0 top-0 h-full w-[6px] bg-[#1d4ed8]" />
+
+      <h1 className="max-w-[900px] text-[46px] font-black leading-[1.08] tracking-tight text-[#141412]">
+        {slide.title}
+      </h1>
+
+      {step >= 2 && (
+        <p className="mt-6 max-w-[820px] text-[21px] leading-snug text-[#4a463e]">
+          {slide.lead}
+        </p>
+      )}
+
+      {step >= 3 && (
+        <ul className="mt-9 max-w-[880px] space-y-3">
+          {slide.outcomes.map((o, i) => (
+            <li key={i} className="flex gap-4">
+              <span className="mt-[11px] h-[7px] w-[7px] shrink-0 rounded-full bg-[#1d4ed8]" />
+              <span className="text-[18px] leading-snug text-[#141412]">{o}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <p className="absolute bottom-10 left-20 font-mono text-[13px] tracking-wide text-[#8a857a]">
+        {slide.meta}
+      </p>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------- company
+
+// The worked example, introduced once. Four figures carry it, because the numbers are
+// what make the company recognisable rather than the description.
+export function CompanyView({ slide, step }: { slide: CompanySlide; step: number }) {
+  return (
+    <div className={SHELL}>
+      <Head block={slide.block} title={slide.title} />
+
+      <div className="mt-2 flex items-baseline gap-4">
+        <span className="text-[38px] font-black leading-none tracking-tight text-[#1d4ed8]">
+          {slide.company}
+        </span>
+        <span className="max-w-[720px] text-[16px] leading-snug text-[#57534a]">
+          {slide.what}
+        </span>
+      </div>
+
+      {step >= 2 && (
+        <div className="mt-10 grid grid-cols-4 gap-6">
+          {slide.figures.map((f, i) => (
+            <div key={i} className="border-t-[3px] border-[#141412] pt-4">
+              <div className="font-mono text-[34px] font-black leading-none text-[#141412]">
+                {f.n}
+              </div>
+              <div className="mt-2 text-[15px] font-bold leading-tight text-[#141412]">
+                {f.label}
+              </div>
+              {f.note && (
+                <div className="mt-1.5 text-[13px] leading-snug text-[#8a857a]">
+                  {f.note}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {step >= 3 && (
+        <Verdict fact={undefined}>{slide.why}</Verdict>
+      )}
     </div>
   );
 }

@@ -8,6 +8,8 @@
 // firing. If the device works these become twenty; if it does not, only three are wasted.
 
 export type Slide =
+  | TitleSlide
+  | CompanySlide
   | BoardSlide
   | WiringSlide
   | ClaimsSlide
@@ -40,6 +42,24 @@ export interface BoardSlide extends Base {
   litByStep?: (string[] | undefined)[];
   readout: { at: number; text: string }[];
   fact: string;
+}
+
+// The opening. States what this is and what you walk away holding, and nothing else.
+export interface TitleSlide extends Base {
+  kind: "title";
+  lead: string;
+  outcomes: string[];
+  meta: string;
+}
+
+// The company every worked example in the day runs on. Introduced properly, once, so
+// that every later slide can just say "SkillSetu" and be understood.
+export interface CompanySlide extends Base {
+  kind: "company";
+  company: string;
+  what: string;
+  figures: { n: string; label: string; note?: string }[];
+  why: string;
 }
 
 // The notification wired to the board: clauses below, the provisions they energise above.
@@ -171,9 +191,31 @@ export interface LanesSlide extends Base {
 export const SLIDES: Slide[] = [
 
   {
+    id: "title",
+    kind: "title",
+    block: "",
+    title: "What the DPDP Act asks of you, and when",
+    lead: "Most of this Act is not in force yet. The part that matters to you arrives on 13 May 2027, and the work it implies takes longer than the time left.",
+    outcomes: [
+      "A written inventory of where personal data actually sits in your business",
+      "Your notice measured against what Rule 3 requires",
+      "A position on the data you collected before any of this existed",
+      "A ninety day plan you can put in front of a board",
+    ],
+    meta: "Cohort 1 \u00b7 26 September 2026 \u00b7 Prasath and Olivia",
+    steps: 3,
+    seconds: 180,
+    notes: [
+      "Do not open with the Act. Open with what they leave holding.",
+      "Say the runtime and the shape: seven blocks, you present, they work, questions. Nothing they type reaches us.",
+      "Ask them to open the workbook link now and leave it closed. Finding a link cold at block three costs five minutes.",
+    ],
+  },
+
+  {
     id: "board-at-rest",
     kind: "board",
-    block: "Block 1",
+    block: "Block 1 · When this reaches you",
     title: "One Act, three start dates",
     caption:
       "The government switched this on in three stages. Here is the whole schedule, and where we are in it today.",
@@ -198,56 +240,9 @@ export const SLIDES: Slide[] = [
 
 
   {
-    id: "gazette-wiring",
-    kind: "wiring",
-    block: "Block 1",
-    title: "Where those three dates come from",
-    masthead: [
-      "MINISTRY OF ELECTRONICS AND INFORMATION TECHNOLOGY",
-      "NOTIFICATION",
-      "New Delhi, the 13th November, 2025",
-      "G.S.R. 843(E)",
-    ],
-    clauses: [
-      {
-        ref: "(a)",
-        when: "On publication",
-        extract:
-          "section 2, sections 18 to 26, sections 35, 38 to 43 ... shall come into force",
-        energises: ["s1", "s2", "s18-26", "s35-44"],
-      },
-      {
-        ref: "(b)",
-        when: "One year",
-        extract:
-          "sub-section (9) of section 6 and clause (d) of sub-section (1) of section 27",
-        energises: ["s6-9", "s27-1-d"],
-      },
-      {
-        ref: "(c)",
-        when: "Eighteen months",
-        extract:
-          "sections 3 to 5 ... sections 11 to 17, section 27 except clause (d) ... sections 28 to 34",
-        energises: ["s3-5", "s6", "s7-10", "s11-17", "s27", "s28-34"],
-      },
-    ],
-    verdict:
-      "One page, three clauses, three dates. Everything in this deck about timing comes from here and can be checked against it.",
-    fact: "F123, F124, F128, F129",
-    steps: 5,
-    seconds: 300,
-    notes: [
-      "Show them it is one page. The whole schedule is three clauses long.",
-      "Walk the wires one at a time. Clause (a), then (b), then (c). Let each one land before the next.",
-      "The ring on investigations and fines is the setup for the next block. Do not explain it yet.",
-      "Anyone can check this: F. No. AA-11038/1/2025-CL&ES, signed Ajit Kumar, Jt. Secy.",
-      "If challenged: the words 'impose penalty' do appear inside 27(1)(d). That is the trap. Clause (c) of this same notification is the answer.",
-    ],
-  },
-  {
     id: "november-fires",
     kind: "board",
-    block: "Block 2",
+    block: "Block 1 · When this reaches you",
     title: "What changes on 13 November 2026",
     caption:
       "The next date on the schedule. This is the complete list of what switches on.",
@@ -271,7 +266,7 @@ export const SLIDES: Slide[] = [
   {
     id: "cm-registration",
     kind: "chain",
-    block: "Block 2",
+    block: "Block 1 · When this reaches you",
     title: "Who that date is for",
     intro: "Consent Managers, and almost nobody else. Here is what becoming one takes.",
     nodes: [
@@ -305,7 +300,7 @@ export const SLIDES: Slide[] = [
   {
     id: "enforcement-chain",
     kind: "chain",
-    block: "Block 2",
+    block: "Block 1 · When this reaches you",
     title: "Does anything get enforced on that date?",
     intro: "The question everybody asks about November. Enforcement needs three things, and the schedule tells you when each arrives.",
     nodes: [
@@ -338,9 +333,32 @@ export const SLIDES: Slide[] = [
   },
 
   {
+    id: "skillsetu",
+    kind: "company",
+    block: "Block 2 · Where your data is",
+    title: "Every example today runs on one company",
+    company: "SkillSetu",
+    what: "An Indian edtech. Live tutoring, recorded classes, a marketplace of freelance tutors. Roughly the size and shape of a company at Series B.",
+    figures: [
+      { n: "400,000", label: "learner accounts", note: "across app and web" },
+      { n: "60,000", label: "of them under 18", note: "15 percent, and they do not know the number" },
+      { n: "12", label: "systems holding personal data", note: "three of which nobody owns" },
+      { n: "1", label: "processor outside India", note: "no contract with them at all" },
+    ],
+    why: "It is invented, but nothing in it is. Every system, every gap and every awkward question comes from real engagements. If it sounds like your company, that is the point.",
+    steps: 3,
+    seconds: 180,
+    notes: [
+      "Make the case that this is recognisable. If they do not see themselves in it, the exercises do not land.",
+      "The three unowned systems and the vendor with no contract are the two findings that recur all day. Plant them here.",
+      "Nobody has to agree it looks like them. Ask instead which of the four numbers they could produce for their own business by Friday.",
+    ],
+  },
+
+  {
     id: "skillsetu-estate",
     kind: "diagram",
-    block: "Block 3",
+    block: "Block 2 · Where your data is",
     title: "Where personal data actually sits",
     nodes: [
       { id: "app", label: "Learner app", sub: "400,000 accounts", x: 120, y: 250, w: 190 },
@@ -374,7 +392,7 @@ export const SLIDES: Slide[] = [
   {
     id: "inventory-row",
     kind: "ledger",
-    block: "Block 3",
+    block: "Block 2 · Where your data is",
     title: "One row, filled honestly",
     headers: ["Data element", "Where it lives", "Lawful basis", "Retention", "Shared with"],
     rows: [
@@ -397,7 +415,7 @@ export const SLIDES: Slide[] = [
   {
     id: "children",
     kind: "proportion",
-    block: "Block 3",
+    block: "Block 2 · Where your data is",
     title: "Why the children question is not a footnote",
     total: { n: "400,000", label: "learners" },
     subset: { n: "60,000", label: "under 18", count: 15 },
@@ -417,7 +435,7 @@ export const SLIDES: Slide[] = [
   {
     id: "notice-requirements",
     kind: "ledger",
-    block: "Block 4",
+    block: "Block 3 · What you must tell people",
     title: "What a notice has to contain",
     headers: ["Requirement", "Where it comes from", "Typical state"],
     rows: [
@@ -443,7 +461,7 @@ export const SLIDES: Slide[] = [
   {
     id: "legacy-position",
     kind: "chain",
-    block: "Block 4",
+    block: "Block 3 · What you must tell people",
     title: "Data you collected before any of this commenced",
     intro: "One dataset, three defensible positions. Pick one per dataset and write down why.",
     nodes: [
@@ -477,7 +495,7 @@ export const SLIDES: Slide[] = [
   {
     id: "rights-clocks",
     kind: "ledger",
-    block: "Block 5",
+    block: "Block 4 · When someone asks",
     title: "Four requests, and what the clock actually says",
     headers: ["The request", "What it really is", "The deadline"],
     rows: [
@@ -502,7 +520,7 @@ export const SLIDES: Slide[] = [
   {
     id: "breach-two-laws",
     kind: "compare",
-    block: "Block 6",
+    block: "Block 5 · When it goes wrong",
     title: "Two laws, one incident, and only one of them applies today",
     panels: [
       {
@@ -542,7 +560,7 @@ export const SLIDES: Slide[] = [
   {
     id: "four-clocks",
     kind: "dials",
-    block: "Block 6",
+    block: "Block 5 · When it goes wrong",
     title: "Four clocks, one of them running",
     dials: [
       { time: "6h", who: "CERT-In", starts: "On noticing", running: true },
@@ -564,7 +582,7 @@ export const SLIDES: Slide[] = [
   {
     id: "vendor-clauses",
     kind: "ledger",
-    block: "Block 6",
+    block: "Block 5 · When it goes wrong",
     title: "What has to be in the processor contract",
     headers: ["Clause", "Why it exists", "In your current template"],
     rows: [
@@ -589,7 +607,7 @@ export const SLIDES: Slide[] = [
   {
     id: "ninety-day",
     kind: "lanes",
-    block: "Block 7",
+    block: "Block 6 · What you do next",
     title: "The next ninety days",
     lanes: [
       { area: "Inventory", now: "Today\u2019s rows", day30: "Every system named, owners assigned", day90: "Unknowns closed or escalated" },
@@ -609,6 +627,28 @@ export const SLIDES: Slide[] = [
       "The last column is deliberately not done. Ninety days does not finish this, and pretending it does is how plans get abandoned.",
     ],
   },
+
+  {
+    id: "close",
+    kind: "title",
+    block: "",
+    title: "What you are leaving with",
+    lead: "None of this waits on the Board being constituted, and none of it waits on May 2027. It is all work you control today.",
+    outcomes: [
+      "Download your workbook before you close the tab. It is held in your browser and nowhere else",
+      "The inventory is the dependency. Rights, breach and notice all fail without it",
+      "Contracts you sign this quarter will still be running in May 2027. Fix the template now",
+      "CERT-In is live today. That obligation does not wait for anything",
+    ],
+    meta: "Questions to privacy@theprivacylabs.com",
+    steps: 3,
+    seconds: 240,
+    notes: [
+      "Do not summarise the Act. Summarise what they now hold and what it is for.",
+      "Point at the download button before saying anything else. This is the last moment their work is recoverable.",
+      "Take the remaining questions here rather than earlier, so the last thing they hear is an answer rather than a slide.",
+    ],
+  }
 ];
 
 export function slideLabel(slide: Slide): string {

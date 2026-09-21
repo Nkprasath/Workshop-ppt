@@ -179,7 +179,7 @@ export const SECTIONS: Section[] = [
   {
     id: "inventory",
     title: "Data inventory",
-    block: "Block 3",
+    block: "Block 2 · Where your data is",
     intro:
       "Everything else in the day depends on this one being honest. You cannot answer an access request without it, you cannot scope a breach without it, and you cannot decide anything about legacy data without it. Write unknown where the answer is unknown. Unknown is a finding and it is the most useful thing on the page.",
     parts: [
@@ -248,7 +248,7 @@ export const SECTIONS: Section[] = [
   {
     id: "notice",
     title: "Notice checklist",
-    block: "Block 4",
+    block: "Block 3 · What you must tell people",
     intro:
       "Eighteen requirements, each one traced to the sub-clause it comes from. Mark each one against your own current notice as it stands today, not as you intend it to be. Partial is an honest and common answer.",
     parts: [
@@ -409,7 +409,7 @@ export const SECTIONS: Section[] = [
   {
     id: "legacy",
     title: "Legacy data position",
-    block: "Block 4",
+    block: "Block 3 · What you must tell people",
     intro:
       "The data you already hold, collected under a notice that would not pass the checklist on the previous page. This is the part of the day with no settled answer, and this page is built to record a decision rather than to find a right one.",
     parts: [
@@ -504,7 +504,7 @@ export const SECTIONS: Section[] = [
   {
     id: "rights",
     title: "Rights request SOP",
-    block: "Block 5",
+    block: "Block 4 · When someone asks",
     intro:
       "One page that a support agent could follow at 6pm on a Friday without calling anyone. Write it for that person rather than for a regulator.",
     parts: [
@@ -734,7 +734,7 @@ export const SECTIONS: Section[] = [
   {
     id: "breach",
     title: "Breach",
-    block: "Block 6",
+    block: "Block 5 · When it goes wrong",
     intro:
       "Two clocks that are live today and two that arrive in May 2027. The point of this section is that the decisions have to be pre-made, because six hours is not enough time to have a meeting about whether to have a meeting.",
     parts: [
@@ -889,7 +889,7 @@ export const SECTIONS: Section[] = [
   {
     id: "vendor",
     title: "Vendor escalation",
-    block: "Block 6",
+    block: "Block 5 · When it goes wrong",
     intro:
       "You cannot meet your own clocks if a processor tells you a week late. Section 8(1) makes you responsible for processing done on your behalf irrespective of any agreement to the contrary, so this is your problem regardless of what the contract says.",
     parts: [
@@ -1035,7 +1035,7 @@ export const SECTIONS: Section[] = [
   {
     id: "plan",
     title: "90 day plan and readiness scorecard",
-    block: "Block 7",
+    block: "Block 6 · What you do next",
     intro:
       "The point of the scorecard is not the score. It is having six rows with a named owner against each, so that the person who did not attend today can be told what they now own.",
     parts: [

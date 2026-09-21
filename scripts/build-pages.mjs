@@ -101,7 +101,7 @@ async function main() {
 
   // Plain HTML pages: the landing page, and the review page written for Olivia. Both take
   // the same compiled CSS so the whole site is one visual system.
-  for (const name of ["index.html", "review.html"]) {
+  for (const name of ["index.html", "review.html", "flow.html"]) {
     const shell = await readFile(path.join(root, "src", "standalone", name), "utf8");
     const html = shell.replace("__CSS__", css);
     await writeFile(path.join(out, name), html, "utf8");
