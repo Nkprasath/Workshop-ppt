@@ -4,57 +4,52 @@
 // G.S.R. 843(E) actually put it in. The three states are the three clauses of that
 // notification, nothing invented:
 //
-//   clause (a) -> LIVE on 13 November 2025
+//   clause (a) -> in force since 13 November 2025
 //   clause (b) -> one year later, 13 November 2026
 //   clause (c) -> eighteen months later, 13 May 2027
 //
 // This file is the single source of truth for what is switched on. If a slide wants to
 // claim a provision is in force, it points at a tile here rather than asserting it.
+//
+// `name` is what a room would call the provision and it is the headline on the tile.
+// `ref` is the statutory reference, in the notification's own words, and it is the small
+// print. That order matters: somebody meeting this for the first time should learn what
+// the provision does before being asked to parse a subsection list.
 
 export type TileState = "live" | "nov2026" | "may2027";
 
 export interface Tile {
   id: string;
-  // Rendered in mono. The statutory reference, exactly as the notification words it.
   ref: string;
-  // Two or three words of plain English. What a room would call it.
   name: string;
   state: TileState;
-  // Grid placement on a 6 column board.
-  col: number;
-  row: number;
-  span?: number;
 }
 
-export const STATE_LABEL: Record<TileState, string> = {
-  live: "In force",
-  nov2026: "13 Nov 2026",
-  may2027: "13 May 2027",
-};
-
-export const TILES: Tile[] = [
-  // ---- clause (a), live since 13 November 2025 -----------------------------
-  { id: "s1", ref: "s.1(2)", name: "Commencement", state: "live", col: 1, row: 1 },
-  { id: "s2", ref: "s.2", name: "Definitions", state: "live", col: 2, row: 1 },
-  { id: "s18-26", ref: "ss.18-26", name: "The Board exists", state: "live", col: 3, row: 1, span: 2 },
-  { id: "s35-44", ref: "ss.35, 38-43", name: "Rule-making power", state: "live", col: 5, row: 1, span: 2 },
-
-  // ---- clause (b), one year, 13 November 2026 ------------------------------
-  { id: "s6-9", ref: "s.6(9)", name: "Consent Manager duties", state: "nov2026", col: 1, row: 2, span: 3 },
-  { id: "s27-1-d", ref: "s.27(1)(d)", name: "Board registers CMs", state: "nov2026", col: 4, row: 2, span: 3 },
-
-  // ---- clause (c), eighteen months, 13 May 2027 ----------------------------
-  { id: "s3-5", ref: "ss.3-5", name: "Scope, grounds, notice", state: "may2027", col: 1, row: 3, span: 2 },
-  { id: "s6", ref: "s.6(1)-(8), (10)", name: "Consent", state: "may2027", col: 3, row: 3, span: 2 },
-  { id: "s7-10", ref: "ss.7-10", name: "Duties, children, SDFs", state: "may2027", col: 5, row: 3, span: 2 },
-
-  { id: "s11-17", ref: "ss.11-17", name: "Rights and grievance", state: "may2027", col: 1, row: 4, span: 2 },
-  { id: "s27", ref: "s.27 (rest)", name: "Board powers", state: "may2027", col: 3, row: 4, span: 2 },
-  { id: "s28-34", ref: "ss.28-34", name: "Inquiry and penalties", state: "may2027", col: 5, row: 4, span: 2 },
+export const COLUMNS: { state: TileState; when: string; date: string }[] = [
+  { state: "live", when: "In force now", date: "Since 13 Nov 2025" },
+  { state: "nov2026", when: "Next", date: "13 Nov 2026" },
+  { state: "may2027", when: "Then everything else", date: "13 May 2027" },
 ];
 
-export const BOARD_COLS = 6;
-export const BOARD_ROWS = 4;
+export const TILES: Tile[] = [
+  // ---- clause (a), in force since 13 November 2025 -------------------------
+  { id: "s2", ref: "s.2", name: "Definitions", state: "live" },
+  { id: "s18-26", ref: "ss.18-26", name: "The Board exists on paper", state: "live" },
+  { id: "s35-44", ref: "ss.35, 38-43", name: "Power to make the Rules", state: "live" },
+  { id: "s1", ref: "s.1(2)", name: "Commencement itself", state: "live" },
+
+  // ---- clause (b), one year, 13 November 2026 ------------------------------
+  { id: "s6-9", ref: "s.6(9)", name: "Consent Manager duties", state: "nov2026" },
+  { id: "s27-1-d", ref: "s.27(1)(d)", name: "Board can register Consent Managers", state: "nov2026" },
+
+  // ---- clause (c), eighteen months, 13 May 2027 ----------------------------
+  { id: "s3-5", ref: "ss.3-5", name: "Notice you must give people", state: "may2027" },
+  { id: "s6", ref: "s.6(1)-(8), (10)", name: "Consent, and withdrawing it", state: "may2027" },
+  { id: "s7-10", ref: "ss.7-10", name: "Your duties, children, big firms", state: "may2027" },
+  { id: "s11-17", ref: "ss.11-17", name: "People's rights, and complaints", state: "may2027" },
+  { id: "s27", ref: "s.27 (rest)", name: "Everything else the Board can do", state: "may2027" },
+  { id: "s28-34", ref: "ss.28-34", name: "Investigations and fines", state: "may2027" },
+];
 
 export function tile(id: string): Tile {
   const found = TILES.find((t) => t.id === id);
@@ -62,14 +57,17 @@ export function tile(id: string): Tile {
   return found;
 }
 
-// Board geometry, so annotations are derived from where a tile actually is rather than
-// guessed. The board is a 6 column grid of 84px rows with 10px gaps, drawn 1080 wide and
-// then scaled, so every position follows from that.
-const COL_GAP = 10;
-const ROW_H = 84;
-const ROW_GAP = 10;
-const BOARD_W = 1080;
-const COL_W = (BOARD_W - COL_GAP * (BOARD_COLS - 1)) / BOARD_COLS;
+export function columnTiles(state: TileState): Tile[] {
+  return TILES.filter((t) => t.state === state);
+}
+
+// Geometry, so annotations are derived from where a tile actually is rather than guessed.
+// These have to match the constants the board is drawn with in Board.tsx.
+const COL_W = 340;
+const COL_GAP = 30;
+const TILE_H = 56;
+const TILE_GAP = 8;
+const HEAD_H = 5 + 12 + 46;
 
 export interface Rect {
   x: number;
@@ -87,16 +85,27 @@ export function tileRect(
   scale: number
 ): Rect {
   const t = tile(id);
-  const span = t.span ?? 1;
-  const left = (t.col - 1) * (COL_W + COL_GAP);
-  const width = span * COL_W + (span - 1) * COL_GAP;
-  const top = (t.row - 1) * (ROW_H + ROW_GAP);
+  const colIndex = COLUMNS.findIndex((c) => c.state === t.state);
+  const rowIndex = columnTiles(t.state).findIndex((x) => x.id === id);
+
+  const left = colIndex * (COL_W + COL_GAP);
+  const top = HEAD_H + rowIndex * (TILE_H + TILE_GAP);
   return {
     x: originX + left * scale,
     y: originY + top * scale,
-    w: width * scale,
-    h: ROW_H * scale,
-    cx: originX + (left + width / 2) * scale,
-    cy: originY + (top + ROW_H / 2) * scale,
+    w: COL_W * scale,
+    h: TILE_H * scale,
+    cx: originX + (left + COL_W / 2) * scale,
+    cy: originY + (top + TILE_H / 2) * scale,
   };
+}
+
+// The bottom of a whole column, for marks that point at a tranche rather than a tile.
+export function columnBottom(
+  state: TileState,
+  originY: number,
+  scale: number
+): number {
+  const n = columnTiles(state).length;
+  return originY + (HEAD_H + n * TILE_H + (n - 1) * TILE_GAP) * scale;
 }

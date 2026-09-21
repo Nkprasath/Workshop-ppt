@@ -197,7 +197,7 @@ export const SLIDES: Slide[] = [
       },
     ],
     verdict:
-      "Every provision these three claims depend on is in the last two rows, and every one of them is dark until 13 May 2027.",
+      "Every provision these three claims depend on sits in the last column, and none of it is in force until 13 May 2027.",
     steps: 5,
     seconds: 240,
     notes: [
@@ -218,9 +218,9 @@ export const SLIDES: Slide[] = [
     steps: 4,
     focusByStep: [undefined, ["s1", "s2", "s18-26", "s35-44"], ["s6-9", "s27-1-d"], undefined],
     readout: [
-      { at: 2, text: "Live since 13 November 2025: definitions, and the Board's own existence." },
-      { at: 3, text: "Seven weeks away: Consent Manager registration. Two tiles. That is all." },
-      { at: 4, text: "Everything you would recognise as compliance is in the last row, and it is dark." },
+      { at: 2, text: "In force since 13 November 2025: the definitions, and the Board existing on paper." },
+      { at: 3, text: "Seven weeks away: Consent Manager registration. Two provisions. That is the whole of it." },
+      { at: 4, text: "Everything you would recognise as compliance is in the last column, and none of it is in force." },
     ],
     fact: "F1, F3, F4",
     seconds: 210,
@@ -228,7 +228,7 @@ export const SLIDES: Slide[] = [
       "Let them read the board before you say anything. The picture does the work.",
       "The Act commenced by G.S.R. 843(E). The Rules are a separate instrument, G.S.R. 846(E), same date. Conflating them is the most common error in circulating summaries (F4).",
       "Some sources say 14 November 2025, which is when the Gazette copy became available. Say 13 November, note the discrepancy exists, move on (F5).",
-      "Do not editorialise on the last row yet. Block 2 earns it.",
+      "Do not editorialise on the last column yet. Block 2 earns it.",
     ],
   },
 
@@ -331,16 +331,15 @@ export const SLIDES: Slide[] = [
     focusByStep: [undefined, ["s6-9", "s27-1-d"], ["s28-34"]],
     litByStep: [undefined, ["s6-9", "s27-1-d"], ["s6-9", "s27-1-d"]],
     readout: [
-      { at: 2, text: "Two tiles light. Consent Manager duties, and the Board's power to register them." },
+      { at: 2, text: "Two provisions switch on. Consent Manager duties, and the Board's power to register them." },
       { at: 3, text: "Inquiry and penalties do not move. They are still six months away." },
     ],
     fact: "F130, from F123 to F129",
     seconds: 180,
     notes: [
-      "Use the softened reading unless Olivia has signed off on the strong one.",
-      "Softened: the notified text does not support penalties beginning on this date. Others read it differently and it has not been tested.",
-      "Strong: no penalty can be imposed on anyone on 13 November 2026, and no Data Fiduciary is within reach of the Board's inquiry power.",
-      "Close generously. Treating this date as a planning checkpoint is reasonable. Treating it as the date penalties begin is not supported by the text (F145).",
+      "Say it plainly: no penalty can be imposed on anyone on this date, and no Data Fiduciary is within reach of the Board's inquiry power.",
+      "The penalty machinery arrives on 13 May 2027 with everything else. That is the date to plan against.",
+      "Close generously. Treating 13 November 2026 as a planning checkpoint is reasonable. Treating it as the date penalties begin is not supported by the text (F145).",
     ],
   },
 
@@ -374,7 +373,7 @@ export const SLIDES: Slide[] = [
     seconds: 240,
     notes: [
       "Walk it left to right. Let each box fail before moving on.",
-      "Olivia owns this reading. If she has not signed it off, use the softened wording: the notified text does not support penalties beginning on that date.",
+      "If challenged, the contrary argument is that 27(1)(d) is self-executing without section 28. Even then no money moves, because the amount lives only in section 33 and the Schedule and neither is in force.",
       "Be fair: treating 13 November 2026 as a planning checkpoint is reasonable. Treating it as the date penalties begin is not (F145).",
     ],
   },

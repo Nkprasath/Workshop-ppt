@@ -1,41 +1,53 @@
 "use client";
 
-import { TILES, BOARD_COLS, STATE_LABEL } from "@/lib/content/board";
+import { TILES, COLUMNS, columnTiles } from "@/lib/content/board";
 import type { Tile, TileState } from "@/lib/content/board";
 
-// The commencement board. Every slide that makes a claim about what is in force is built
-// on this object, so the room learns one picture and then watches it change.
+// The commencement board.
 //
-// Tiles are machine-crisp on purpose. Lamps are the only thing that carries colour, so a
-// lit tile is the only thing on any slide that can pull the eye.
+// Laid out as three dated columns, because the subject IS time: what is switched on now,
+// what arrives in November, and what arrives in May 2027. An earlier version was a 6 by 4
+// grid of section numbers, which made you decode "ss.6(1)-(8), (10)" before you learned
+// anything and hid the shape of the argument.
+//
+// The imbalance between the columns is the argument. Two provisions in the middle column
+// against ten either side of it is the whole of Block 2 in one picture, and nobody has to
+// read a legend to see it.
+//
+// Plain English is the headline on every tile; the statutory reference is the small print
+// underneath, for the people who want to check.
 
-const LAMP: Record<TileState, string> = {
-  // Solid, ringed: in force.
-  live: "bg-[#1d4ed8] ring-[3px] ring-[#1d4ed8]/25",
-  // Hollow centre, heavy rim: pending. Reads as different from solid even at low bitrate.
-  nov2026: "bg-transparent border-[3px] border-[#b45309]",
-  // Thin outline, empty: not yet.
-  may2027: "bg-transparent border-[2px] border-[#9c978c]",
-};
-
-const TILE_SHELL: Record<TileState, string> = {
-  live: "border-[#1d4ed8] bg-white",
-  nov2026: "border-[#b45309] bg-white",
-  may2027: "border-[#c5c0b5] bg-[#f2efe9]",
-};
-
-const TILE_TEXT: Record<TileState, string> = {
-  live: "text-[#141412]",
-  nov2026: "text-[#141412]",
-  may2027: "text-[#7d786d]",
+const TONE: Record<
+  TileState,
+  { head: string; rule: string; tile: string; name: string; ref: string }
+> = {
+  live: {
+    head: "text-[#1d4ed8]",
+    rule: "bg-[#1d4ed8]",
+    tile: "border-[#1d4ed8] bg-white",
+    name: "text-[#141412]",
+    ref: "text-[#6b6659]",
+  },
+  nov2026: {
+    head: "text-[#b45309]",
+    rule: "bg-[#b45309]",
+    tile: "border-[#b45309] bg-white",
+    name: "text-[#141412]",
+    ref: "text-[#6b6659]",
+  },
+  may2027: {
+    head: "text-[#57534a]",
+    rule: "bg-[#a8a296]",
+    tile: "border-[#c5c0b5] bg-[#f2efe9]",
+    name: "text-[#4a463e]",
+    ref: "text-[#8a857a]",
+  },
 };
 
 export interface BoardProps {
-  // Tiles named here are drawn at full attention. Everything else recedes. An empty or
-  // absent list means the whole board is at equal weight.
+  // Tiles named here stay at full attention; everything else recedes.
   focus?: string[];
-  // Tiles forced to render as though already switched on, for the moment a slide shows a
-  // tranche firing.
+  // Tiles drawn as though already switched on, for the moment a tranche fires.
   lit?: string[];
   scale?: number;
   className?: string;
@@ -47,26 +59,41 @@ export function Board({ focus, lit = [], scale = 1, className = "" }: BoardProps
   return (
     <div
       className={`relative ${className}`}
-      style={{ width: 1080 * scale, height: 372 * scale }}
+      style={{ width: BOARD_W * scale, height: BOARD_H * scale }}
       data-board
     >
       <div
-        className="absolute left-0 top-0 grid origin-top-left gap-2.5"
-        style={{
-          width: 1080,
-          gridTemplateColumns: `repeat(${BOARD_COLS}, 1fr)`,
-          gridAutoRows: "84px",
-          transform: `scale(${scale})`,
-        }}
+        className="absolute left-0 top-0 flex origin-top-left"
+        style={{ width: BOARD_W, gap: COL_GAP, transform: `scale(${scale})` }}
       >
-        {TILES.map((t) => (
-          <TileCell
-            key={t.id}
-            tile={t}
-            dimmed={hasFocus && !focus!.includes(t.id)}
-            forcedLive={lit.includes(t.id)}
-          />
-        ))}
+        {COLUMNS.map((col) => {
+          const tone = TONE[col.state];
+          const tiles = columnTiles(col.state);
+          return (
+            <div key={col.state} style={{ width: COL_W }} data-column={col.state}>
+              <div className={`h-[5px] w-full rounded-full ${tone.rule}`} />
+              <div className="mb-3 mt-3">
+                <div className={`text-[19px] font-black leading-none ${tone.head}`}>
+                  {col.when}
+                </div>
+                <div className="mt-1.5 font-mono text-[12px] font-bold uppercase tracking-wider text-[#8a857a]">
+                  {col.date} · {tiles.length} of {TILES.length}
+                </div>
+              </div>
+
+              <div className="flex flex-col" style={{ gap: TILE_GAP }}>
+                {tiles.map((t) => (
+                  <TileCell
+                    key={t.id}
+                    tile={t}
+                    lit={lit.includes(t.id)}
+                    dimmed={hasFocus && !focus!.includes(t.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -74,64 +101,38 @@ export function Board({ focus, lit = [], scale = 1, className = "" }: BoardProps
 
 function TileCell({
   tile,
+  lit,
   dimmed,
-  forcedLive,
 }: {
   tile: Tile;
+  lit: boolean;
   dimmed: boolean;
-  forcedLive: boolean;
 }) {
-  const state: TileState = forcedLive ? "live" : tile.state;
+  const state: TileState = lit ? "live" : tile.state;
+  const tone = TONE[state];
   return (
     <div
       data-tile={tile.id}
       data-state={state}
-      className={`relative flex flex-col justify-between rounded-[3px] border-2 px-3 py-2.5 ${TILE_SHELL[state]}`}
-      style={{
-        gridColumn: `${tile.col} / span ${tile.span ?? 1}`,
-        gridRow: tile.row,
-        opacity: dimmed ? 0.5 : 1,
-      }}
+      className={`rounded-[3px] border-2 px-3.5 py-2.5 ${tone.tile}`}
+      style={{ height: TILE_H, opacity: dimmed ? 0.35 : 1 }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <span
-          className={`font-mono text-[14px] font-bold leading-none ${TILE_TEXT[state]}`}
-        >
-          {tile.ref}
-        </span>
-        <span
-          data-lamp={tile.id}
-          className={`mt-[1px] h-[11px] w-[11px] shrink-0 rounded-full ${LAMP[state]}`}
-        />
+      <div className={`text-[15px] font-bold leading-tight ${tone.name}`}>
+        {tile.name}
       </div>
-      <div>
-        <div className={`text-[15px] font-bold leading-tight ${TILE_TEXT[state]}`}>
-          {tile.name}
-        </div>
-        <div
-          className={`mt-1 font-mono text-[11px] font-bold uppercase tracking-wider ${
-            state === "may2027" ? "text-[#9c978c]" : "text-[#6b6659]"
-          }`}
-        >
-          {STATE_LABEL[state]}
-        </div>
+      <div className={`mt-1 font-mono text-[11px] leading-none ${tone.ref}`}>
+        {tile.ref}
       </div>
     </div>
   );
 }
 
-// The legend, shown wherever the board is introduced or re-introduced after a gap.
-export function BoardKey({ className = "" }: { className?: string }) {
-  return (
-    <div className={`flex items-center gap-6 ${className}`}>
-      {(["live", "nov2026", "may2027"] as TileState[]).map((s) => (
-        <span key={s} className="flex items-center gap-2">
-          <span className={`h-[11px] w-[11px] rounded-full ${LAMP[s]}`} />
-          <span className="font-mono text-[12px] font-bold uppercase tracking-wider text-[#6b6659]">
-            {STATE_LABEL[s]}
-          </span>
-        </span>
-      ))}
-    </div>
-  );
-}
+// Layout constants, exported so annotations can be positioned from the same numbers the
+// board is drawn with rather than from a guess.
+export const COL_W = 340;
+export const COL_GAP = 30;
+export const TILE_H = 56;
+export const TILE_GAP = 8;
+export const HEAD_H = 5 + 12 + 46;
+export const BOARD_W = COL_W * 3 + COL_GAP * 2;
+export const BOARD_H = HEAD_H + 6 * TILE_H + 5 * TILE_GAP;

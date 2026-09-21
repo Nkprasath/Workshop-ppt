@@ -11,8 +11,9 @@ import {
   DialsView,
   LanesView,
 } from "./Kinds";
-import { Board, BoardKey } from "./Board";
-import { tileRect } from "@/lib/content/board";
+import { Board, BOARD_W, BOARD_H } from "./Board";
+import { tileRect, columnBottom } from "@/lib/content/board";
+import type { TileState } from "@/lib/content/board";
 import { Layer, Ring, Arrow, Strike } from "./Annotate";
 
 // Every slide renders onto a fixed 1280x720 canvas which is then scaled to the viewport,
@@ -48,7 +49,7 @@ function Fact({ children }: { children: React.ReactNode }) {
 
 // Where the board sits on a board slide, and the helper that turns a tile id into ring
 // geometry, so a mark always lands on the thing it is marking.
-const BOARD_AT = { x: 100, y: 248, scale: 0.94 };
+const BOARD_AT = { x: (1280 - BOARD_W * 0.88) / 2, y: 196, scale: 0.88 };
 
 function ringOn(
   id: string,
@@ -68,7 +69,7 @@ function BoardSlideView({ slide, step }: { slide: BoardSlide; step: number }) {
     <div className="relative h-full bg-[#fbfaf7] px-16 py-12">
       <Head block={slide.block} title={slide.title} />
 
-      <p className="mb-8 max-w-[760px] text-[17px] leading-snug text-[#5c5850]">
+      <p className="mb-6 max-w-[820px] text-[17px] leading-snug text-[#5c5850]">
         {slide.caption}
       </p>
 
@@ -87,8 +88,7 @@ function BoardSlideView({ slide, step }: { slide: BoardSlide; step: number }) {
             </p>
           )}
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
-          <BoardKey />
+        <div className="shrink-0">
           <Fact>{slide.fact}</Fact>
         </div>
       </div>
@@ -110,8 +110,7 @@ function BoardSlideView({ slide, step }: { slide: BoardSlide; step: number }) {
 
 // Board geometry on this slide, in canvas coordinates. Row centres are derived from the
 // board's own 84px rows and 10px gaps at the scale it is drawn here.
-const WIRE_BOARD = { x: 219, y: 106, scale: 0.72 };
-const WIRE_BOARD_BOTTOM = WIRE_BOARD.y + 372 * WIRE_BOARD.scale;
+const WIRE_BOARD = { x: (1280 - BOARD_W * 0.66) / 2, y: 104, scale: 0.66 };
 
 function WiringSlideView({ slide, step }: { slide: WiringSlide; step: number }) {
   // Step 1 is the board and the notification, cold. Steps 2 to 4 energise one clause
@@ -123,14 +122,22 @@ function WiringSlideView({ slide, step }: { slide: WiringSlide; step: number }) 
 
   // Each wire runs from its clause block up to the tile that clause actually energises.
   const CLAUSE_TOP = 450;
-  const anchors = ["s18-26", "s27-1-d", "s28-34"];
+  const anchors: { tile: string; column: TileState }[] = [
+    { tile: "s18-26", column: "live" },
+    { tile: "s27-1-d", column: "nov2026" },
+    { tile: "s28-34", column: "may2027" },
+  ];
   const wires = slide.clauses.map((_, i) => {
-    const r = tileRect(anchors[i], WIRE_BOARD.x, WIRE_BOARD.y, WIRE_BOARD.scale);
+    const a = anchors[i];
+    const r = tileRect(a.tile, WIRE_BOARD.x, WIRE_BOARD.y, WIRE_BOARD.scale);
     const colW = (1152 - 32) / 3;
     const cx = 64 + i * (colW + 16) + colW / 2;
     return {
       from: [cx, CLAUSE_TOP] as [number, number],
-      to: [r.cx, WIRE_BOARD_BOTTOM + 9] as [number, number],
+      to: [
+        r.cx,
+        columnBottom(a.column, WIRE_BOARD.y, WIRE_BOARD.scale) + 10,
+      ] as [number, number],
     };
   });
 
@@ -227,8 +234,8 @@ function WiringSlideView({ slide, step }: { slide: WiringSlide; step: number }) 
 
 // -------------------------------------------------------------------- claims
 
-const CLAIMS_BOARD = { x: 219, y: 104, scale: 0.70 };
-const CLAIMS_BOARD_BOTTOM = CLAIMS_BOARD.y + 372 * CLAIMS_BOARD.scale;
+const CLAIMS_BOARD = { x: (1280 - BOARD_W * 0.62) / 2, y: 100, scale: 0.62 };
+const CLAIMS_BOARD_BOTTOM = CLAIMS_BOARD.y + BOARD_H * 0.62;
 
 function ClaimsSlideView({ slide, step }: { slide: ClaimsSlide; step: number }) {
   // Steps 2 to 4 take one claim each; step 5 strikes all three at once.
