@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "echo 'API only: the static site is built and served from GitHub Pages'",
+  "outputDirectory": "docs",
+  "framework": null
+}
