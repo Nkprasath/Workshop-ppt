@@ -82,6 +82,11 @@ async function main() {
         "process.env.WORKBOOK_RETENTION_DAYS": '"30"',
         "process.env.WORKBOOK_GRIEVANCE_EMAIL": '"privacy@theprivacylabs.com"',
         "process.env.WORKBOOK_WORKSHOP_DATE": '"2026-09-26"',
+        // Where the comments API lives. Public, not a secret: the database credential
+        // stays in the Vercel function's own environment and never reaches the browser.
+        "process.env.REVIEW_API_BASE": JSON.stringify(
+          process.env.REVIEW_API_BASE ?? ""
+        ),
       },
       alias: { "@": path.join(root, "src") },
       loader: { ".woff2": "dataurl", ".svg": "dataurl" },

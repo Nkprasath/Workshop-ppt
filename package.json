@@ -10,7 +10,8 @@
     "animejs": "^4.5.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "roughjs": "^4.6.6"
+    "roughjs": "^4.6.6",
+    "mongodb": "^6.12.0"
   },
   "devDependencies": {
     "@types/react": "19.0.7",

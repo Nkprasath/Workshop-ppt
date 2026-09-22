@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { SLIDES, slideLabel } from "@/lib/content/deck";
 import { SlideView, fragmentCount, CANVAS } from "./Slides";
 import { revealSlide } from "./reveal";
+import { CommentPanel, CommentBadge } from "./Comments";
 
 export default function Deck() {
   const slides = SLIDES;
@@ -13,6 +14,8 @@ export default function Deck() {
   const [step, setStep] = useState(1);
   const [presenter, setPresenter] = useState(false);
   const [overview, setOverview] = useState(false);
+  const [comments, setComments] = useState(false);
+  const [commentTick, setCommentTick] = useState(0);
   const [scale, setScale] = useState(1);
   const [elapsed, setElapsed] = useState(0);
   const [running, setRunning] = useState(false);
@@ -100,6 +103,8 @@ export default function Deck() {
         if (i > 0) goto(i - 1);
       } else if (k === "p" || k === "P") {
         setPresenter((v) => !v);
+      } else if (k === "c" || k === "C") {
+        setComments((v) => !v);
       } else if (k === "o" || k === "O" || k === "Escape") {
         setOverview((v) => !v);
       } else if (k === "f" || k === "F") {
@@ -323,12 +328,36 @@ export default function Deck() {
           style={{ width: `${((i + 1) / slides.length) * 100}%` }}
         />
       </div>
-      <Keys on={controls} />
+      <Keys
+        on={controls}
+        badge={
+          <CommentBadge
+            target={slide.id}
+            tick={commentTick}
+            onClick={() => setComments(true)}
+          />
+        }
+      />
+      <CommentPanel
+        target={slide.id}
+        targetLabel={`Slide ${i + 1}: ${slide.title}`}
+        open={comments}
+        onClose={() => {
+          setComments(false);
+          setCommentTick((t) => t + 1);
+        }}
+      />
     </div>
   );
 }
 
-function Keys({ on }: { on: Record<string, () => void> }) {
+function Keys({
+  on,
+  badge,
+}: {
+  on: Record<string, () => void>;
+  badge?: React.ReactNode;
+}) {
   const items: [string, string, () => void][] = [
     ["space", "next", on.next],
     ["←", "back", on.back],
@@ -352,9 +381,7 @@ function Keys({ on }: { on: Record<string, () => void> }) {
           {label}
         </button>
       ))}
-      <span className="ml-auto pr-2 font-mono text-[10px] text-gray-600">
-        click the slide to advance
-      </span>
+      <span className="ml-auto pr-2">{badge}</span>
     </div>
   );
 }

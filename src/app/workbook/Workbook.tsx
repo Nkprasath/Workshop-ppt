@@ -8,6 +8,7 @@ import type { Progress, Workbook } from "@/lib/progress";
 import { PartView } from "./Parts";
 import { downloadCsv } from "@/lib/client-export";
 import { Header, Banner } from "../Brand";
+import { CommentPanel, CommentBadge } from "../deck/Comments";
 
 const PREVIEW_STORAGE_KEY = "dpdp-workbook-preview";
 const SAVE_DEBOUNCE_MS = 900;
@@ -36,6 +37,8 @@ export default function WorkbookView({
   const [showSettings, setShowSettings] = useState(false);
   const [deleted, setDeleted] = useState<string | null>(null);
   const [navOpen, setNavOpen] = useState(false);
+  const [comments, setComments] = useState(false);
+  const [commentTick, setCommentTick] = useState(0);
 
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pending = useRef<Workbook | null>(null);
@@ -404,7 +407,16 @@ export default function WorkbookView({
 
           <div className="min-w-0">
             <div className="mb-6">
-              <div className="cite mb-1">{section.block}</div>
+              <div className="mb-1 flex items-center justify-between gap-4">
+                <span className="cite">{section.block}</span>
+                {preview && (
+                  <CommentBadge
+                    target={`workbook-${section.id}`}
+                    tick={commentTick}
+                    onClick={() => setComments(true)}
+                  />
+                )}
+              </div>
               <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                 {section.title}
               </h2>
@@ -448,6 +460,18 @@ export default function WorkbookView({
           </div>
         </div>
       </div>
+
+      {preview && (
+        <CommentPanel
+          target={`workbook-${section.id}`}
+          targetLabel={`Workbook: ${section.title}`}
+          open={comments}
+          onClose={() => {
+            setComments(false);
+            setCommentTick((t) => t + 1);
+          }}
+        />
+      )}
     </>
   );
 }
