@@ -201,6 +201,9 @@ export default function Deck() {
         }}
       >
         <SlideView key={`${slide.id}-${step}`} slide={slide} step={step} />
+        <span className="pointer-events-none absolute bottom-5 right-7 font-mono text-[13px] font-bold tracking-wider text-[#b8b3a8]">
+          {i + 1}
+        </span>
       </div>
 
       {/* Click to drive. A remote sends arrow keys, but a laptop trackpad is what is
