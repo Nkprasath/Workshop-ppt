@@ -11,6 +11,24 @@ import type {
 type Row = Record<string, string>;
 type Answers = Record<string, unknown>;
 
+// Renders **text** as bold, so a key term can stand out inside a plain sentence.
+function Rich({ text }: { text: string }) {
+  const parts = text.split("**");
+  return (
+    <>
+      {parts.map((p, i) =>
+        i % 2 === 1 ? (
+          <strong key={i} className="font-semibold text-gray-900">
+            {p}
+          </strong>
+        ) : (
+          <span key={i}>{p}</span>
+        )
+      )}
+    </>
+  );
+}
+
 // The worked example, shown beside every fillable part. The SkillSetu answers are the
 // teaching, so they get a real panel rather than a footnote.
 function Example({ rows }: { rows: { label: string; value: string }[] }) {
@@ -156,17 +174,25 @@ function TableBody({
         + Add a row
       </button>
 
+      {/* One collapsed panel for the whole example, closed by default, so it is there
+          when someone wants it and does not push the next part off the screen. */}
       {body.example.length > 0 && (
-        <div className="mt-5 space-y-3">
-          {body.example.map((row, i) => (
-            <Example
-              key={i}
-              rows={body.columns
-                .filter((c) => row[c.key])
-                .map((c) => ({ label: c.label, value: row[c.key] }))}
-            />
-          ))}
-        </div>
+        <details className="group mt-5 rounded-lg border border-blue-100 bg-blue-50/40">
+          <summary className="flex cursor-pointer select-none items-center gap-2 px-4 py-3 text-[13px] font-semibold text-blue-900">
+            <span className="inline-block transition-transform group-open:rotate-90">&#9656;</span>
+            Show worked example ({body.example.length} {body.example.length === 1 ? "row" : "rows"})
+          </summary>
+          <div className="space-y-3 px-4 pb-4">
+            {body.example.map((row, i) => (
+              <Example
+                key={i}
+                rows={body.columns
+                  .filter((c) => row[c.key])
+                  .map((c) => ({ label: c.label, value: row[c.key] }))}
+              />
+            ))}
+          </div>
+        </details>
       )}
     </div>
   );
@@ -320,9 +346,22 @@ function ReferenceBody({ body }: { body: ReferencePart }) {
     <div className="space-y-4">
       {body.paragraphs?.map((p, i) => (
         <p key={i} className="text-[14px] leading-relaxed text-gray-600">
-          {p}
+          <Rich text={p} />
         </p>
       ))}
+
+      {body.points && body.points.length > 0 && (
+        <ul className="space-y-2">
+          {body.points.map((p, i) => (
+            <li key={i} className="flex gap-2.5 text-[14px] leading-relaxed text-gray-600">
+              <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" />
+              <span>
+                <Rich text={p} />
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {body.table && (
         <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -398,13 +437,37 @@ export function PartView({
   onChange: (next: unknown) => void;
 }) {
   const body = part.body;
+
+  // Reference material that people open when they need it: closed behind its title.
+  if (part.collapsed && body.kind === "reference") {
+    return (
+      <details className="group card">
+        <summary className="flex cursor-pointer select-none items-center gap-2 p-5 text-[15px] font-bold text-gray-900">
+          <span className="inline-block text-[12px] text-blue-600 transition-transform group-open:rotate-90">
+            &#9656;
+          </span>
+          {part.title}
+          <span className="ml-auto text-[12px] font-medium text-gray-400 group-open:hidden">Show</span>
+        </summary>
+        <div className="px-5 pb-5">
+          {part.guidance && (
+            <p className="mb-4 max-w-2xl text-[13px] leading-relaxed text-gray-500">
+              <Rich text={part.guidance} />
+            </p>
+          )}
+          <ReferenceBody body={body} />
+        </div>
+      </details>
+    );
+  }
+
   return (
     <section className="card p-5">
       <div className="mb-4">
         <h3 className="text-[15px] font-bold text-gray-900">{part.title}</h3>
         {part.guidance && (
           <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-gray-500">
-            {part.guidance}
+            <Rich text={part.guidance} />
           </p>
         )}
       </div>

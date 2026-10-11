@@ -67,6 +67,9 @@ export interface ReferencePart {
   kind: "reference";
   // Either prose paragraphs or a table, or both.
   paragraphs?: string[];
+  // Short bullet points. Preferred over paragraphs: a list gets read, a block does not.
+  // **text** renders bold.
+  points?: string[];
   table?: {
     headers: string[];
     rows: string[][];
@@ -82,6 +85,8 @@ export type Part = {
   id: string;
   title: string;
   guidance?: string;
+  // Rendered closed, behind its title, for reference material people open when needed.
+  collapsed?: boolean;
   body: TablePart | ChecklistPart | FormPart | ReferencePart;
 };
 

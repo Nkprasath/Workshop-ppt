@@ -97,3 +97,33 @@
 .deck-static [data-anim="dot"] {
   opacity: 1 !important;
 }
+
+/* No orphaned last words and no lopsided headings: lines break where a reader expects. */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+p, li, td, dd, blockquote {
+  text-wrap: pretty;
+}
+
+/* Opening slides: an element that appears on a step rises into place once. Stagger with an
+   inline animation-delay. */
+@keyframes deck-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.deck-rise {
+  animation: deck-rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes deck-grow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.deck-grow {
+  transform-origin: top;
+  animation: deck-grow 900ms cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-rise, .deck-grow { animation: none; }
+}
+.deck-static .deck-rise, .deck-static .deck-grow { animation: none; }

@@ -193,7 +193,7 @@ export default function WorkbookView({
     <>
       <Header
         title="Your workbook"
-        sub={preview ? "26 September 2026 · saved in this browser" : `26 September 2026 · ${settings.email}`}
+        sub={preview ? "Saved in this browser" : settings.email}
         right={
           <>
             <span

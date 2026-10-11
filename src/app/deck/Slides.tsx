@@ -13,6 +13,7 @@ import {
   DialsView,
   LanesView,
 } from "./Kinds";
+import { CoverView, HostsView, AgendaView } from "./Opening";
 import { Board, BOARD_W, BOARD_H } from "./Board";
 import { tileRect, columnBottom } from "@/lib/content/board";
 import type { TileState } from "@/lib/content/board";
@@ -39,12 +40,9 @@ function Head({ block, title }: { block: string; title: string }) {
   );
 }
 
-function Fact({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="font-mono text-[11px] tracking-wide text-[#b5b1a7]">
-      {children}
-    </span>
-  );
+// Fact-base references are no longer shown on slides; see ui.tsx.
+function Fact(_props: { children: React.ReactNode }) {
+  return null;
 }
 
 // --------------------------------------------------------------------- board
@@ -333,6 +331,12 @@ function ClaimsSlideView({ slide, step }: { slide: ClaimsSlide; step: number }) 
 
 export function SlideView({ slide, step }: { slide: Slide; step: number }) {
   switch (slide.kind) {
+    case "cover":
+      return <CoverView slide={slide} step={step} />;
+    case "hosts":
+      return <HostsView slide={slide} step={step} />;
+    case "agenda":
+      return <AgendaView slide={slide} step={step} />;
     case "title":
       return <TitleView slide={slide} step={step} />;
     case "company":

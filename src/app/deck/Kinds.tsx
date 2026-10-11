@@ -102,7 +102,7 @@ export function ChainView({ slide, step }: { slide: ChainSlide; step: number }) 
         <div className="flex" style={{ gap: GAP }}>
           {slide.nodes.map((n, i) => {
             const on = i < shown;
-            const absent = n.state === "absent";
+            const absent = n.state === "absent" && !slide.neutral;
             return (
               <div
                 key={i}
@@ -120,13 +120,13 @@ export function ChainView({ slide, step }: { slide: ChainSlide; step: number }) 
                   <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#6b6659]">
                     Step {i + 1}
                   </span>
-                  {on && (
+                  {on && !slide.neutral && (
                     <span
                       className={`font-mono text-[11px] font-bold uppercase tracking-wider ${
                         absent ? "text-[#c0392b]" : "text-[#1d4ed8]"
                       }`}
                     >
-                      {absent ? "Does not exist" : "Exists"}
+                      {absent ? "Not yet in place" : "In place"}
                     </span>
                   )}
                 </div>
@@ -144,7 +144,7 @@ export function ChainView({ slide, step }: { slide: ChainSlide; step: number }) 
 
       <Layer>
         {slide.nodes.slice(0, shown).map((n, i) =>
-          n.state === "absent" ? (
+          n.state === "absent" && !slide.neutral ? (
             <Strike
               key={i}
               x1={cx(i) - BOX_W / 2 + 16}
@@ -169,7 +169,7 @@ export function ChainView({ slide, step }: { slide: ChainSlide; step: number }) 
         ))}
       </Layer>
 
-      {step > slide.nodes.length + 1 && (
+      {step >= slide.nodes.length + 1 && (
         <Verdict fact={slide.fact}>{slide.verdict}</Verdict>
       )}
     </div>
@@ -250,7 +250,7 @@ export function LedgerView({ slide, step }: { slide: LedgerSlide; step: number }
         </p>
       )}
 
-      {step >= (empty ? 3 : slide.rows.length + 1) && (
+      {step >= (empty ? 3 : slide.rows.length) && (
         <Verdict fact={slide.fact}>{slide.verdict}</Verdict>
       )}
     </div>
@@ -263,6 +263,8 @@ const NODE_H = 62;
 
 export function DiagramView({ slide, step }: { slide: DiagramSlide; step: number }) {
   const byId = Object.fromEntries(slide.nodes.map((n) => [n.id, n]));
+  // The rings and the conclusion arrive with the last edge, not on a click of their own.
+  const lastEdge = Math.max(...slide.edges.map((e) => e.at));
 
   return (
     <div className={SHELL}>
@@ -321,7 +323,7 @@ export function DiagramView({ slide, step }: { slide: DiagramSlide; step: number
               />
             );
           })}
-        {step >= 5 &&
+        {step >= lastEdge &&
           slide.nodes
             .filter((n) => n.tone === "warn")
             .map((n, i) => (
@@ -338,7 +340,7 @@ export function DiagramView({ slide, step }: { slide: DiagramSlide; step: number
             ))}
       </Layer>
 
-      {step >= 5 && (
+      {step >= lastEdge && (
         <Verdict tone="false" fact={slide.fact} top={556}>
           {slide.verdict}
         </Verdict>
@@ -446,7 +448,7 @@ export function ProportionView({
               </div>
             </>
           )}
-          {step >= 3 && (
+          {step >= 2 && (
             <p className="mt-7 border-l-[3px] border-[#1d4ed8] pl-5 text-[17px] leading-snug text-[#3d3a34]">
               {slide.consequence}
             </p>
@@ -609,7 +611,7 @@ export function LanesView({ slide, step }: { slide: LanesSlide; step: number }) 
         ))}
       </div>
 
-      {step >= 3 && <Verdict fact={slide.fact}>{slide.verdict}</Verdict>}
+      {step >= 2 && <Verdict fact={slide.fact}>{slide.verdict}</Verdict>}
     </div>
   );
 }
@@ -689,7 +691,7 @@ export function CompanyView({ slide, step }: { slide: CompanySlide; step: number
         </div>
       )}
 
-      {step >= 3 && (
+      {step >= 2 && (
         <Verdict fact={undefined}>{slide.why}</Verdict>
       )}
     </div>

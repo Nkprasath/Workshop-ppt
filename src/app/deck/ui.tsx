@@ -16,12 +16,10 @@ export function Head({ block, title }: { block: string; title: string }) {
   );
 }
 
-export function Fact({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="font-mono text-[11px] tracking-wide text-[#9c978c]">
-      {children}
-    </span>
-  );
+// Fact-base references (F1, F48...) were shown in the corner of slides. Taken off the
+// slides at the reviewer's request; they stay in deck.ts and the fact base.
+export function Fact(_props: { children: React.ReactNode }) {
+  return null;
 }
 
 // The conclusion, always in the same place at the foot of the slide, always the same

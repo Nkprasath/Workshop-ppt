@@ -40,8 +40,7 @@ export default function StaticWorkbook() {
             DPDP Implementation Workshop
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-base text-gray-600">
-            Cohort 1. Saturday 26 September 2026. This is your workbook for the
-            day, and it is yours to take away.
+            Your workbook for the session. It is yours to keep.
           </p>
         </div>
       </div>

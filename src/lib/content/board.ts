@@ -27,27 +27,27 @@ export interface Tile {
 
 export const COLUMNS: { state: TileState; when: string; date: string }[] = [
   { state: "live", when: "In force now", date: "Since 13 Nov 2025" },
-  { state: "nov2026", when: "Next", date: "13 Nov 2026" },
-  { state: "may2027", when: "Then everything else", date: "13 May 2027" },
+  { state: "nov2026", when: "Comes into force", date: "13 Nov 2026" },
+  { state: "may2027", when: "Comes into force", date: "13 May 2027" },
 ];
 
 export const TILES: Tile[] = [
   // ---- clause (a), in force since 13 November 2025 -------------------------
   { id: "s2", ref: "s.2", name: "Definitions", state: "live" },
-  { id: "s18-26", ref: "ss.18-26", name: "The Board exists on paper", state: "live" },
+  { id: "s18-26", ref: "ss.18-26", name: "DPBI established", state: "live" },
   { id: "s35-44", ref: "ss.35, 38-43", name: "Power to make the Rules", state: "live" },
-  { id: "s1", ref: "s.1(2)", name: "Commencement itself", state: "live" },
+  { id: "s1", ref: "s.1(2)", name: "Commencement of the Act", state: "live" },
 
   // ---- clause (b), one year, 13 November 2026 ------------------------------
   { id: "s6-9", ref: "s.6(9)", name: "Consent Manager duties", state: "nov2026" },
-  { id: "s27-1-d", ref: "s.27(1)(d)", name: "Board can register Consent Managers", state: "nov2026" },
+  { id: "s27-1-d", ref: "s.27(1)(d)", name: "DPBI can register Consent Managers", state: "nov2026" },
 
   // ---- clause (c), eighteen months, 13 May 2027 ----------------------------
   { id: "s3-5", ref: "ss.3-5", name: "Notice you must give people", state: "may2027" },
   { id: "s6", ref: "s.6(1)-(8), (10)", name: "Consent, and withdrawing it", state: "may2027" },
   { id: "s7-10", ref: "ss.7-10", name: "Your duties, children, big firms", state: "may2027" },
   { id: "s11-17", ref: "ss.11-17", name: "People's rights, and complaints", state: "may2027" },
-  { id: "s27", ref: "s.27 (rest)", name: "Everything else the Board can do", state: "may2027" },
+  { id: "s27", ref: "s.27 (rest)", name: "Other DPBI functions", state: "may2027" },
   { id: "s28-34", ref: "ss.28-34", name: "Investigations and fines", state: "may2027" },
 ];
 
